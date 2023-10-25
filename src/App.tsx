@@ -18,26 +18,56 @@ function App() {
         onClick={() => {
           setCount((count = 0));
         }}
-        style={{ fontSize: "25px" } as React.CSSProperties}
       >
-        {e.user_name}
-        {count > 0 ? (
-          <span
-            className="badge badge-primary border"
-            style={
-              {
-                color: "#ffffff",
-                backgroundColor: "#3d67ff",
-                fontSize: "20px",
-                padding: "5px",
-              } as React.CSSProperties
-            }
-          >
-            {count}
-          </span>
-        ) : (
-          <></>
-        )}
+        <div
+          style={
+            {
+              width: "25%",
+            } as React.CSSProperties
+          }
+        >
+          <img
+            src={"data:image/png;base64," + e.user_img}
+            style={{ width: "100%" } as React.CSSProperties}
+          />
+        </div>
+        <div
+          style={
+            {
+              fontSize: "150%",
+              paddingLeft: "5%",
+              width: "50%",
+              height: "100%",
+            } as React.CSSProperties
+          }
+        >
+          {e.user_name}
+        </div>
+        <div
+          style={
+            {
+              width: "15%",
+              height: "100%",
+            } as React.CSSProperties
+          }
+        >
+          {count > 0 ? (
+            <span
+              className="badge badge-primary border"
+              style={
+                {
+                  color: "#ffffff",
+                  backgroundColor: "#3d67ff",
+                  fontSize: "100%",
+                } as React.CSSProperties
+              }
+            >
+              {count}
+            </span>
+          ) : (
+            <></>
+          )}
+        </div>
       </li>
     );
   });
@@ -227,21 +257,11 @@ function App() {
                       height: "5vh",
                       fontSize: "30px",
                       fontWeight: "bold",
-                      paddingLeft: "10px",
-                      paddingTop: "5px",
-                      paddingBottom: "5px",
+                      msTransform: "translateY(-50%)",
+                      transform: "translateY(-50%)",
                     } as React.CSSProperties
                   }
                 >
-                  <img
-                    src={basePath + "/profile-01.svg"}
-                    style={
-                      {
-                        height: "100%",
-                        marginRight: "10px",
-                      } as React.CSSProperties
-                    }
-                  />
                   นักเรียนเอ
                 </div>
                 <div
