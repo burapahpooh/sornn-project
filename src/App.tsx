@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { Scrollbars } from "react-custom-scrollbars";
 import "./fonts.css";
 import "./index.css";
-const basePath = "/sornn-project/";
 //import Login from "./Login.tsx";
 
 function App() {
