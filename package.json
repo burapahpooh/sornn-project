@@ -2,7 +2,7 @@
   "name": "sornn-project",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://burapahpooh.github.io/sornn-project",
+  "homepage": "http://burapahpooh.github.io/sornn-project",
   "type": "module",
   "scripts": {
     "predeploy": "npm run build",
