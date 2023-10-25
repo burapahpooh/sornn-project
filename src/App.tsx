@@ -9,13 +9,14 @@ import "./index.css";
 function App() {
   var [count, setCount] = useState(10);
   var userData: any = [];
+  var [currentChatUser, setCurrentChatUser] = useState<user | null>(null);
   //user import
   users.forEach((e: user) => {
     userData.push(
       <li
         className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
         onClick={() => {
-          setCount((count = 0));
+          setCurrentChatUser((currentChatUser = e));
         }}
       >
         <div
@@ -76,8 +77,10 @@ function App() {
         style={
           {
             overflowX: "hidden",
-            minHeight: "100vh",
+            height: "100vh",
             fontFamily: "DBHeaventCondBold",
+            padding: 0,
+            margin: 0,
           } as React.CSSProperties
         }
       >
@@ -214,65 +217,83 @@ function App() {
               {
                 width: "20%",
                 height: "100vh",
-                padding: "5px 10px 0px 20px",
               } as React.CSSProperties
             }
           >
-            <div>
-              <div
-                style={
-                  {
-                    fontSize: "50px",
-                    textAlign: "center",
-                  } as React.CSSProperties
-                }
-              >
-                กล่องข้อความ
-              </div>
-              <div id="userChat">
-                <Scrollbars
-                  //autoHide
-                  style={{ width: "100%", height: "92vh" }}
-                >
-                  <ul
-                    className="list-group"
-                    style={{ fontSize: 15 } as React.CSSProperties}
-                  >
-                    {userData}
-                  </ul>
-                </Scrollbars>
-              </div>
+            <div
+              style={
+                {
+                  fontSize: "50px",
+                  textAlign: "center",
+                  height: "10%",
+                } as React.CSSProperties
+              }
+            >
+              กล่องข้อความ
             </div>
+            <Scrollbars
+              //autoHide
+              style={{ width: "100%", height: "90%" }}
+            >
+              <ul
+                className="list-group"
+                style={{ fontSize: 15 } as React.CSSProperties}
+              >
+                {userData}
+              </ul>
+            </Scrollbars>
           </div>
-          <div style={{ width: "75%", height: "100vh" } as React.CSSProperties}>
+          <div
+            style={
+              {
+                width: "75%",
+                height: "100vh",
+                padding: 0,
+              } as React.CSSProperties
+            }
+          >
             <div
               className="border"
-              style={{ height: "100vh" } as React.CSSProperties}
+              style={
+                {
+                  height: "5%",
+                  fontSize: "150%",
+                  fontWeight: "bold",
+                  paddingLeft: "1%",
+                } as React.CSSProperties
+              }
             >
-              <div className="border" style={{} as React.CSSProperties}>
-                <div
+              <div
+                className="row"
+                style={{ height: "100%" } as React.CSSProperties}
+              >
+                <img
+                  src={"data:image/png;base64," + currentChatUser?.user_img}
                   style={
                     {
-                      height: "5vh",
-                      fontSize: "30px",
-                      fontWeight: "bold",
-                      msTransform: "translateY(-50%)",
-                      transform: "translateY(-50%)",
+                      height: "80%",
+                      width: "auto",
+                      margin: "auto 0",
                     } as React.CSSProperties
                   }
+                />
+                <div
+                  style={
+                    { width: "10%", margin: "auto 0" } as React.CSSProperties
+                  }
                 >
-                  นักเรียนเอ
+                  {currentChatUser?.user_name}
                 </div>
-                <div
-                  className="border"
-                  style={{ height: "90vh" } as React.CSSProperties}
-                ></div>
-                <div
-                  className="border"
-                  style={{ height: "5vh" } as React.CSSProperties}
-                ></div>
               </div>
             </div>
+            <div
+              className="border"
+              style={{ height: "90%" } as React.CSSProperties}
+            ></div>
+            <div
+              className="border"
+              style={{ height: "5%" } as React.CSSProperties}
+            ></div>
           </div>
         </div>
       </div>
