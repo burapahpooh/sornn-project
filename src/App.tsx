@@ -1,5 +1,5 @@
 import "bootstrap/dist/css/bootstrap.css";
-import { users, user } from "./data/data.tsx";
+import { users, user, conversation, conversations } from "./data/data.tsx";
 import React, { useState } from "react";
 import { Scrollbars } from "react-custom-scrollbars";
 import "./fonts.css";
@@ -7,8 +7,10 @@ import "./index.css";
 //import Login from "./Login.tsx";
 
 function App() {
-  var [count, setCount] = useState(10);
+  var count = 0;
+  //var [count, setCount] = useState(10);
   var userData: any = [];
+  var conversationData: Array<conversation> = conversations;
   var [currentChatUser, setCurrentChatUser] = useState<user | null>(null);
   //user import
   users.forEach((e: user) => {
@@ -102,7 +104,7 @@ function App() {
               style={{ marginBottom: "30vh" } as React.CSSProperties}
             >
               <img
-                src="/sornn-logo.svg"
+                src="/sornn-project/sornn-logo.svg"
                 style={{ width: "100%" } as React.CSSProperties}
               ></img>
             </div>
@@ -267,16 +269,20 @@ function App() {
                 className="row"
                 style={{ height: "100%" } as React.CSSProperties}
               >
-                <img
-                  src={"data:image/png;base64," + currentChatUser?.user_img}
-                  style={
-                    {
-                      height: "80%",
-                      width: "auto",
-                      margin: "auto 0",
-                    } as React.CSSProperties
-                  }
-                />
+                {currentChatUser?.user_img != null ? (
+                  <img
+                    src={"data:image/png;base64," + currentChatUser?.user_img}
+                    style={
+                      {
+                        height: "80%",
+                        width: "auto",
+                        margin: "auto 0",
+                      } as React.CSSProperties
+                    }
+                  />
+                ) : (
+                  <></>
+                )}
                 <div
                   style={
                     { width: "10%", margin: "auto 0" } as React.CSSProperties
@@ -289,7 +295,9 @@ function App() {
             <div
               className="border"
               style={{ height: "90%" } as React.CSSProperties}
-            ></div>
+            >
+              {conversationData[0].conversation_id}
+            </div>
             <div
               className="border"
               style={{ height: "5%" } as React.CSSProperties}
