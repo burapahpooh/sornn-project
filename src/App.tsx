@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Scrollbars } from "react-custom-scrollbars";
 import "./fonts.css";
 import "./index.css";
-import defineConfig from "../vite.config.ts";
+const basePath = "/sornn-project/";
 //import Login from "./Login.tsx";
 
 function App() {
@@ -234,7 +234,7 @@ function App() {
                   }
                 >
                   <img
-                    src={defineConfig.base + "/profile-01.svg"}
+                    src={basePath + "/profile-01.svg"}
                     style={
                       {
                         height: "100%",
