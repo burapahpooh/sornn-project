@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Scrollbars } from "react-custom-scrollbars";
 import "./fonts.css";
 import "./index.css";
+import defineConfig from "../vite.config.ts";
 //import Login from "./Login.tsx";
 
 function App() {
@@ -233,7 +234,7 @@ function App() {
                   }
                 >
                   <img
-                    src="/profile-01.svg"
+                    src={defineConfig.base + "/profile-01.svg"}
                     style={
                       {
                         height: "100%",
