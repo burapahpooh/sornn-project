@@ -7,10 +7,11 @@ import "./index.css";
 //import Login from "./Login.tsx";
 
 function App() {
-  var count = 0;
+  var count = 10;
   //var [count, setCount] = useState(10);
   var userData: any = [];
   var conversationData: Array<conversation> = conversations;
+  var currentConversation: any = [];
   var [currentChatUser, setCurrentChatUser] = useState<user | null>(null);
   //user import
   users.forEach((e: user) => {
@@ -19,12 +20,13 @@ function App() {
         className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
         onClick={() => {
           setCurrentChatUser((currentChatUser = e));
+          currentConversation = [];
         }}
       >
         <div
           style={
             {
-              width: "25%",
+              width: "15%",
             } as React.CSSProperties
           }
         >
@@ -37,8 +39,7 @@ function App() {
           style={
             {
               fontSize: "150%",
-              paddingLeft: "5%",
-              width: "50%",
+              width: "60%",
               height: "100%",
             } as React.CSSProperties
           }
@@ -73,6 +74,54 @@ function App() {
       </li>
     );
   });
+  //conversation trigger
+  conversationData
+    .find((item) => {
+      return item.conversation_id === currentChatUser?.user_conversations[0];
+    })
+    ?.messages.forEach((message) => {
+      currentConversation.push(
+        message.sender_user_id === currentChatUser?.user_id ? (
+          <div
+            style={
+              {
+                width: "100%",
+                display: "flex",
+                justifyContent: "left",
+              } as React.CSSProperties
+            }
+          >
+            <img
+              className="user-profile"
+              src={"data:image/png;base64," + currentChatUser?.user_img}
+            />
+            <div className="message">{message.message_text}</div>
+          </div>
+        ) : (
+          <div
+            style={
+              {
+                width: "100%",
+                display: "flex",
+                justifyContent: "right",
+              } as React.CSSProperties
+            }
+          >
+            <div className="message">{message.message_text}</div>
+            <img
+              style={
+                {
+                  width: "1.5%",
+                  objectFit: "contain",
+                  margin: "0% 1% 0% 0%",
+                } as React.CSSProperties
+              }
+              src="/sornn-project/circle.png"
+            />
+          </div>
+        )
+      );
+    });
   return (
     <>
       <div
@@ -269,7 +318,9 @@ function App() {
                 className="row"
                 style={{ height: "100%" } as React.CSSProperties}
               >
-                {currentChatUser?.user_img != null ? (
+                {currentChatUser?.user_img == null ? (
+                  <></>
+                ) : (
                   <img
                     src={"data:image/png;base64," + currentChatUser?.user_img}
                     style={
@@ -280,8 +331,6 @@ function App() {
                       } as React.CSSProperties
                     }
                   />
-                ) : (
-                  <></>
                 )}
                 <div
                   style={
@@ -293,10 +342,10 @@ function App() {
               </div>
             </div>
             <div
-              className="border"
+              className="border main-chat-panel"
               style={{ height: "90%" } as React.CSSProperties}
             >
-              {conversationData[0].conversation_id}
+              {currentConversation == null ? <></> : currentConversation}
             </div>
             <div
               className="border"
