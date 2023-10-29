@@ -1,7 +1,14 @@
 import "bootstrap/dist/css/bootstrap.css";
-import { users, user, conversation, conversations } from "./data/data.tsx";
+import {
+  users,
+  user,
+  conversation,
+  conversations,
+  message,
+} from "./data/data.tsx";
 import React, { useState } from "react";
 import { Scrollbars } from "react-custom-scrollbars";
+import { useRef } from "react";
 import "./fonts.css";
 import "./index.css";
 //import Login from "./Login.tsx";
@@ -12,7 +19,12 @@ function App() {
   var userData: any = [];
   var conversationData: Array<conversation> = conversations;
   var currentConversation: any = [];
+  var currentMessage: conversation;
+  var LatestMessage: Array<message>;
   var [currentChatUser, setCurrentChatUser] = useState<user | null>(null);
+  var [MessageText, UpdateMessageText] = useState("");
+  var [sendMessage, UpdateConversation] = useState("");
+  const inputRef = useRef(null);
   //user import
   users.forEach((e: user) => {
     userData.push(
@@ -75,53 +87,57 @@ function App() {
     );
   });
   //conversation trigger
-  conversationData
-    .find((item) => {
-      return item.conversation_id === currentChatUser?.user_conversations[0];
-    })
-    ?.messages.forEach((message) => {
-      currentConversation.push(
-        message.sender_user_id === currentChatUser?.user_id ? (
-          <div
-            style={
-              {
-                width: "100%",
-                display: "flex",
-                justifyContent: "left",
-              } as React.CSSProperties
-            }
-          >
-            <img
-              className="user-profile"
-              src={"data:image/png;base64," + currentChatUser?.user_img}
-            />
-            <div className="message">{message.message_text}</div>
-          </div>
-        ) : (
-          <div
-            style={
-              {
-                width: "100%",
-                display: "flex",
-                justifyContent: "right",
-              } as React.CSSProperties
-            }
-          >
-            <div className="message">{message.message_text}</div>
-            <img
+  function GetConversation() {
+    conversationData
+      .find((item) => {
+        return item.conversation_id === currentChatUser?.user_conversations[0];
+      })
+      ?.messages.forEach((message) => {
+        currentConversation.push(
+          message.sender_user_id === currentChatUser?.user_id ? (
+            <div
               style={
                 {
-                  width: "1.5%",
-                  objectFit: "contain",
-                  margin: "0% 1% 0% 0%",
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "left",
                 } as React.CSSProperties
               }
-              src="/sornn-project/circle.png"
-            />
-          </div>
-        )
-      );
-    });
+            >
+              <img
+                className="user-profile"
+                src={"data:image/png;base64," + currentChatUser?.user_img}
+              />
+              <div className="message">{message.message_text}</div>
+            </div>
+          ) : (
+            <div
+              style={
+                {
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "right",
+                } as React.CSSProperties
+              }
+            >
+              <div className="message">{message.message_text}</div>
+              <img
+                style={
+                  {
+                    width: "1.5%",
+                    objectFit: "contain",
+                    margin: "0% 1% 0% 0%",
+                  } as React.CSSProperties
+                }
+                src="/sornn-project/circle.png"
+              />
+            </div>
+          )
+        );
+      });
+  }
+  GetConversation();
+
   return (
     <>
       <div
@@ -347,10 +363,60 @@ function App() {
             >
               {currentConversation == null ? <></> : currentConversation}
             </div>
-            <div
-              className="border"
-              style={{ height: "5%" } as React.CSSProperties}
-            ></div>
+            {currentChatUser?.user_id == null ? (
+              <></>
+            ) : (
+              <div
+                className="border"
+                style={{ height: "5%" } as React.CSSProperties}
+              >
+                <input
+                  type="text"
+                  ref={inputRef}
+                  style={
+                    { width: "80%", height: "100%" } as React.CSSProperties
+                  }
+                  onChange={(val) => {
+                    UpdateMessageText((MessageText = val.target.value));
+                  }}
+                />
+                <button
+                  style={
+                    { width: "20%", height: "100%" } as React.CSSProperties
+                  }
+                  onClick={(val) => {
+                    console.log(val);
+                    conversationData.find((item) => {
+                      if (
+                        item.conversation_id ===
+                        currentChatUser?.user_conversations[0]
+                      ) {
+                        currentMessage = item;
+                      }
+                    });
+                    if (currentMessage == null) {
+                      <></>;
+                    } else {
+                      LatestMessage =
+                        conversationData[
+                          conversationData.indexOf(currentMessage)
+                        ].messages;
+                      conversationData[
+                        conversationData.indexOf(currentMessage)
+                      ].messages.push({
+                        message_id: LatestMessage.length,
+                        sender_user_id: 1,
+                        message_text: MessageText,
+                      });
+                    }
+                    inputRef.current = null;
+                    GetConversation();
+                  }}
+                >
+                  Send Message
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -24,14 +24,12 @@ export var conversations: Array<conversation> = [
       {
         message_id: 1,
         sender_user_id: 1,
-        message_text:
-          "Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World ",
+        message_text: "Hello World!",
       },
       {
         message_id: 2,
         sender_user_id: 2,
-        message_text:
-          "Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World Hello World ",
+        message_text: "Hello World!",
       },
     ],
   },
