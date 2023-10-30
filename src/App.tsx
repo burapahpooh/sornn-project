@@ -14,83 +14,162 @@ import "./index.css";
 
 function App() {
   var count = 10;
-  //var [count, setCount] = useState(10);
-  var userData: any = [];
+  //var userData: any = [];
+  var allConversation: any = [];
+  var dummyConversation: any = null;
+  var dummyUser: any = null;
   var conversationData: Array<conversation> = conversations;
   var currentConversation: any = [];
   var currentMessage: conversation;
   var LatestMessage: Array<message>;
   var [currentChatUser, setCurrentChatUser] = useState<user | null>(null);
+  var [currentConversationID, setCurrentConversationID] = useState<string>("");
   var [MessageText, UpdateMessageText] = useState("");
-  //var [sendMessage, UpdateConversation] = useState("");
   const inputRef = React.useRef<HTMLInputElement | null>(null);
 
-  //user import
-  users.forEach((e: user) => {
-    userData.push(
-      <li
-        className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-        onClick={() => {
-          setCurrentChatUser((currentChatUser = e));
-          currentConversation = [];
-        }}
-      >
-        <div
-          style={
-            {
-              width: "15%",
-            } as React.CSSProperties
-          }
+  var loginUser: user = users[0];
+  //get all chat
+  loginUser.user_conversations.forEach((e: string) => {
+    dummyConversation = conversationData.find((item) => {
+      return item.conversation_id === e;
+    });
+    if (dummyConversation == null) {
+    } else {
+      dummyUser =
+        dummyConversation.user1_id === loginUser.user_id
+          ? users.find((item) => {
+              return item.user_id === dummyConversation.user2_id;
+            })
+          : users.find((item) => {
+              return item.user_id === dummyConversation.user1_id;
+            });
+      allConversation.push(
+        <li
+          className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+          onClick={() => {
+            setCurrentChatUser((currentChatUser = dummyUser));
+            setCurrentConversationID(dummyConversation.conversation_id);
+            currentConversation = [];
+          }}
         >
-          <img
-            src={"data:image/png;base64," + e.user_img}
-            style={{ width: "100%" } as React.CSSProperties}
-          />
-        </div>
-        <div
-          style={
-            {
-              fontSize: "150%",
-              width: "60%",
-              height: "100%",
-            } as React.CSSProperties
-          }
-        >
-          {e.user_name}
-        </div>
-        <div
-          style={
-            {
-              width: "15%",
-              height: "100%",
-            } as React.CSSProperties
-          }
-        >
-          {count > 0 ? (
-            <span
-              className="badge badge-primary border"
-              style={
-                {
-                  color: "#ffffff",
-                  backgroundColor: "#3d67ff",
-                  fontSize: "100%",
-                } as React.CSSProperties
-              }
-            >
-              {count}
-            </span>
-          ) : (
-            <></>
-          )}
-        </div>
-      </li>
-    );
+          <div
+            style={
+              {
+                width: "15%",
+              } as React.CSSProperties
+            }
+          >
+            <img
+              src={"data:image/png;base64," + dummyUser.user_img}
+              style={{ width: "100%" } as React.CSSProperties}
+            />
+          </div>
+          <div
+            style={
+              {
+                fontSize: "150%",
+                width: "60%",
+                height: "100%",
+              } as React.CSSProperties
+            }
+          >
+            {dummyUser.user_name}
+          </div>
+          <div
+            style={
+              {
+                width: "15%",
+                height: "100%",
+              } as React.CSSProperties
+            }
+          >
+            {count > 0 ? (
+              <span
+                className="badge badge-primary border"
+                style={
+                  {
+                    color: "#ffffff",
+                    backgroundColor: "#3d67ff",
+                    fontSize: "100%",
+                  } as React.CSSProperties
+                }
+              >
+                {count}
+              </span>
+            ) : (
+              <></>
+            )}
+          </div>
+        </li>
+      );
+    }
   });
+  //user import
+  // users.forEach((e: user) => {
+  //   userData.push(
+  //     <li
+  //       className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+  //       onClick={() => {
+  //         setCurrentChatUser((currentChatUser = e));
+  //         currentConversation = [];
+  //       }}
+  //     >
+  //       <div
+  //         style={
+  //           {
+  //             width: "15%",
+  //           } as React.CSSProperties
+  //         }
+  //       >
+  //         <img
+  //           src={"data:image/png;base64," + e.user_img}
+  //           style={{ width: "100%" } as React.CSSProperties}
+  //         />
+  //       </div>
+  //       <div
+  //         style={
+  //           {
+  //             fontSize: "150%",
+  //             width: "60%",
+  //             height: "100%",
+  //           } as React.CSSProperties
+  //         }
+  //       >
+  //         {e.user_name}
+  //       </div>
+  //       <div
+  //         style={
+  //           {
+  //             width: "15%",
+  //             height: "100%",
+  //           } as React.CSSProperties
+  //         }
+  //       >
+  //         {count > 0 ? (
+  //           <span
+  //             className="badge badge-primary border"
+  //             style={
+  //               {
+  //                 color: "#ffffff",
+  //                 backgroundColor: "#3d67ff",
+  //                 fontSize: "100%",
+  //               } as React.CSSProperties
+  //             }
+  //           >
+  //             {count}
+  //           </span>
+  //         ) : (
+  //           <></>
+  //         )}
+  //       </div>
+  //     </li>
+  //   );
+  // });
   //conversation trigger
   function GetConversation() {
     conversationData
       .find((item) => {
-        return item.conversation_id === currentChatUser?.user_conversations[0];
+        return item.conversation_id === currentConversationID;
       })
       ?.messages.forEach((message) => {
         currentConversation.push(
@@ -141,7 +220,7 @@ function App() {
     if (inputRef.current!.value === "") {
     } else {
       conversationData.find((item) => {
-        if (item.conversation_id === currentChatUser?.user_conversations[0]) {
+        if (item.conversation_id === currentConversationID) {
           currentMessage = item;
         }
       });
@@ -154,7 +233,7 @@ function App() {
           conversationData.indexOf(currentMessage)
         ].messages.push({
           message_id: LatestMessage.length,
-          sender_user_id: 1,
+          sender_user_id: loginUser.user_id,
           message_text: MessageText,
         });
       }
@@ -331,7 +410,7 @@ function App() {
                 className="list-group"
                 style={{ fontSize: 15 } as React.CSSProperties}
               >
-                {userData}
+                {allConversation}
               </ul>
             </Scrollbars>
           </div>
