@@ -8,7 +8,6 @@ import {
 } from "./data/data.tsx";
 import React, { useState } from "react";
 import { Scrollbars } from "react-custom-scrollbars";
-import { useRef } from "react";
 import "./fonts.css";
 import "./index.css";
 //import Login from "./Login.tsx";
@@ -23,8 +22,9 @@ function App() {
   var LatestMessage: Array<message>;
   var [currentChatUser, setCurrentChatUser] = useState<user | null>(null);
   var [MessageText, UpdateMessageText] = useState("");
-  var [sendMessage, UpdateConversation] = useState("");
-  const inputRef = useRef(null);
+  //var [sendMessage, UpdateConversation] = useState("");
+  const inputRef = React.useRef<HTMLInputElement | null>(null);
+
   //user import
   users.forEach((e: user) => {
     userData.push(
@@ -384,8 +384,7 @@ function App() {
                   style={
                     { width: "20%", height: "100%" } as React.CSSProperties
                   }
-                  onClick={(val) => {
-                    console.log(val);
+                  onClick={() => {
                     conversationData.find((item) => {
                       if (
                         item.conversation_id ===
@@ -409,8 +408,8 @@ function App() {
                         message_text: MessageText,
                       });
                     }
-                    inputRef.current = null;
-                    GetConversation();
+                    inputRef.current!.value = "";
+                    UpdateMessageText((MessageText = ""));
                   }}
                 >
                   Send Message
