@@ -136,8 +136,33 @@ function App() {
         );
       });
   }
-  GetConversation();
 
+  function sendMessage() {
+    if (inputRef.current!.value === "") {
+    } else {
+      conversationData.find((item) => {
+        if (item.conversation_id === currentChatUser?.user_conversations[0]) {
+          currentMessage = item;
+        }
+      });
+      if (currentMessage == null) {
+        <></>;
+      } else {
+        LatestMessage =
+          conversationData[conversationData.indexOf(currentMessage)].messages;
+        conversationData[
+          conversationData.indexOf(currentMessage)
+        ].messages.push({
+          message_id: LatestMessage.length,
+          sender_user_id: 1,
+          message_text: MessageText,
+        });
+      }
+      inputRef.current!.value = "";
+      UpdateMessageText((MessageText = ""));
+    }
+  }
+  GetConversation();
   return (
     <>
       <div
@@ -379,37 +404,18 @@ function App() {
                   onChange={(val) => {
                     UpdateMessageText((MessageText = val.target.value));
                   }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      sendMessage();
+                    }
+                  }}
                 />
                 <button
                   style={
                     { width: "20%", height: "100%" } as React.CSSProperties
                   }
                   onClick={() => {
-                    conversationData.find((item) => {
-                      if (
-                        item.conversation_id ===
-                        currentChatUser?.user_conversations[0]
-                      ) {
-                        currentMessage = item;
-                      }
-                    });
-                    if (currentMessage == null) {
-                      <></>;
-                    } else {
-                      LatestMessage =
-                        conversationData[
-                          conversationData.indexOf(currentMessage)
-                        ].messages;
-                      conversationData[
-                        conversationData.indexOf(currentMessage)
-                      ].messages.push({
-                        message_id: LatestMessage.length,
-                        sender_user_id: 1,
-                        message_text: MessageText,
-                      });
-                    }
-                    inputRef.current!.value = "";
-                    UpdateMessageText((MessageText = ""));
+                    sendMessage();
                   }}
                 >
                   Send Message
