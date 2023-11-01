@@ -83,7 +83,10 @@ function App() {
               } as React.CSSProperties
             }
           >
-            {count > 0 ? (
+            {(loginUser.user_id == dummyConversation.user1_id
+              ? dummyConversation.user1_last_message_id
+              : dummyConversation.user2_last_message_id) >
+            dummyConversation.messages.length ? (
               <span
                 className="badge badge-primary border"
                 style={
