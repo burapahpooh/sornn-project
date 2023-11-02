@@ -1,8 +1,37 @@
 import hash from "hash.js";
 import "./fonts.css";
 import "./index.css";
-import React from "react";
-hash;
+import { users, user } from "./data/data.tsx";
+import React, { useState } from "react";
+var [userLogin, setLoginUser] = useState<user | null>(null);
+
+function hashFunction(message: string) {
+  const encryptedMessage: string = hash.sha256().update(message).digest("hex");
+  return encryptedMessage;
+}
+
+function loginFunction(username: string, password: string) {
+  password = hashFunction(password);
+
+  if (
+    users.find((e) => {
+      if (e.user_username === username && e.user_password === password) {
+        setLoginUser(e);
+      }
+      return e.user_username === username && e.user_password === password;
+    }) == null
+  ) {
+    console.log(userLogin);
+    document.getElementsByClassName("login-status")[0].className =
+      "login-status failed";
+    return "Login Failed";
+  } else {
+    console.log(userLogin);
+    document.getElementsByClassName("login-status")[0].className =
+      "login-status success";
+    return "Login Success";
+  }
+}
 function Login() {
   // const encryptedMessage: string = hash
   //   .sha256()
@@ -11,6 +40,7 @@ function Login() {
   // return encryptedMessage;
   var username: string = "";
   var password: string = "";
+  var [loginStatus, setLoginStatus] = useState("");
   return (
     <>
       <div className="bg-login">
@@ -39,6 +69,11 @@ function Login() {
               onChange={(e) => {
                 username = e.target.value;
               }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  setLoginStatus(loginFunction(username, password));
+                }
+              }}
               required
             />
             <label htmlFor="username" className="input-label">
@@ -65,17 +100,27 @@ function Login() {
               onChange={(e) => {
                 password = e.target.value;
               }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  setLoginStatus(loginFunction(username, password));
+                }
+              }}
               required
             />
             <label htmlFor="password" className="input-label">
               Password
             </label>
           </div>
-
+          <div className="login-status">{loginStatus}</div>
           <button
             className="button-cs"
             onClick={() => {
-              console.log(username + password);
+              setLoginStatus(loginFunction(username, password));
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                setLoginStatus(loginFunction(username, password));
+              }
             }}
           >
             LOGIN

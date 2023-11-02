@@ -123,3 +123,15 @@ svg.nav-bar:hover {
   background-color: #fcbc59;
   border: 5px solid #fcbc59;
 }
+
+div.login-status {
+  font-size: 120%;
+  height: 10%;
+}
+
+.failed {
+  color: #be2525;
+}
+.success {
+  color: #5e8b6f;
+}
