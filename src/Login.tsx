@@ -3,44 +3,52 @@ import "./fonts.css";
 import "./index.css";
 import { users, user } from "./data/data.tsx";
 import React, { useState } from "react";
-var [userLogin, setLoginUser] = useState<user | null>(null);
+import App from "./App.tsx";
 
+export var loginUser = null as user | null;
+
+//Define Function
+//---Hash Function---///
 function hashFunction(message: string) {
   const encryptedMessage: string = hash.sha256().update(message).digest("hex");
   return encryptedMessage;
 }
 
-function loginFunction(username: string, password: string) {
-  password = hashFunction(password);
-
-  if (
-    users.find((e) => {
-      if (e.user_username === username && e.user_password === password) {
-        setLoginUser(e);
-      }
-      return e.user_username === username && e.user_password === password;
-    }) == null
-  ) {
-    console.log(userLogin);
-    document.getElementsByClassName("login-status")[0].className =
-      "login-status failed";
-    return "Login Failed";
-  } else {
-    console.log(userLogin);
-    document.getElementsByClassName("login-status")[0].className =
-      "login-status success";
-    return "Login Success";
-  }
-}
 function Login() {
   // const encryptedMessage: string = hash
   //   .sha256()
   //   .update("B_password")
   //   .digest("hex");
   // return encryptedMessage;
+
+  //Define Parameter
   var username: string = "";
   var password: string = "";
   var [loginStatus, setLoginStatus] = useState("");
+
+  //---Login Function---///
+  function loginFunction(username: string, password: string) {
+    password = hashFunction(password);
+    if (
+      users.find((e) => {
+        if (e.user_username === username && e.user_password === password) {
+          loginUser = e;
+        }
+        return e.user_username === username && e.user_password === password;
+      }) == null
+    ) {
+      (document.getElementById("username") as HTMLInputElement)!.value = "";
+      (document.getElementById("password") as HTMLInputElement)!.value = "";
+      document.getElementsByClassName("login-status")[0].className =
+        "login-status failed";
+      return "Login Failed";
+    } else {
+      document.getElementsByClassName("login-status")[0].className =
+        "login-status success";
+      <App></App>;
+      return "Login Success";
+    }
+  }
   return (
     <>
       <div className="bg-login">

@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
-//import App from "./App.tsx";
-import Login from "./Login.tsx";
+import App from "./App.tsx";
 // import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 // const router = createBrowserRouter([
@@ -13,6 +12,6 @@ import Login from "./Login.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <Login />
+    <App />
   </React.StrictMode>
 );
