@@ -3,7 +3,8 @@ import "./fonts.css";
 import "./index.css";
 import { users, user } from "./data/data.tsx";
 import React, { useState } from "react";
-import App from "./App.tsx";
+import { appPortal } from "./main.tsx";
+import Modal from "react-bootstrap/Modal";
 
 export var loginUser = null as user | null;
 
@@ -14,7 +15,11 @@ function hashFunction(message: string) {
   return encryptedMessage;
 }
 
-function Login() {
+export function resetLoginUser() {
+  loginUser = null;
+}
+
+export default function Login() {
   // const encryptedMessage: string = hash
   //   .sha256()
   //   .update("B_password")
@@ -25,6 +30,7 @@ function Login() {
   var username: string = "";
   var password: string = "";
   var [loginStatus, setLoginStatus] = useState("");
+  var [modalStatus, setModalStatus] = useState(false);
 
   //---Login Function---///
   function loginFunction(username: string, password: string) {
@@ -45,7 +51,11 @@ function Login() {
     } else {
       document.getElementsByClassName("login-status")[0].className =
         "login-status success";
-      <App></App>;
+      setModalStatus(true);
+      setTimeout(() => {
+        appPortal();
+        setModalStatus(false);
+      }, 1000);
       return "Login Success";
     }
   }
@@ -134,9 +144,10 @@ function Login() {
             LOGIN
           </button>
         </div>
+        <Modal show={modalStatus} centered size="sm">
+          <Modal.Body>Processing...</Modal.Body>
+        </Modal>
       </div>
     </>
   );
 }
-
-export default Login;
