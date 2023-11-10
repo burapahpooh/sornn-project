@@ -168,4 +168,41 @@ div.login-status {
     display: flex;
     font-family: "DBHeaventCondBold";
   }
+
+  .input-bar {
+    transition: 0.1s;
+    width: 100%;
+    margin: 15% 1% 1% 1%;
+    padding-bottom: 2%;
+    color: #5e8b6f;
+    background-color: transparent;
+    box-sizing: border-box;
+    border: 0;
+    border-bottom: 2px solid #5e8b6f;
+    &::placeholder {
+      color: transparent;
+    }
+    &:placeholder-shown ~ .input-label {
+      top: 60%;
+      color: #5e8b6f;
+    }
+
+    &:focus {
+      outline: none;
+      border-bottom: 1px solid #fcbc59;
+    }
+    &:focus ~ .input-label {
+      top: 10%;
+    }
+  }
+
+  .input-label {
+    top: 10%;
+    position: absolute;
+    transition: 0.1s;
+    font-size: 100%;
+    color: #fcbc59;
+    left: 0;
+    height: 120%;
+  }
 }
