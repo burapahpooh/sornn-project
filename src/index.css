@@ -136,6 +136,17 @@ div.login-status {
   color: #5e8b6f;
 }
 
+.nav-bar-container {
+  width: 5%;
+  height: 100vh;
+  background-color: #5e8b6f;
+  padding-left: 20px;
+  padding-top: 10px;
+}
+
+.nav-bar-container-mobile {
+  display: none;
+}
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
   .bg-login {
@@ -204,5 +215,52 @@ div.login-status {
     color: #fcbc59;
     left: 0;
     height: 120%;
+  }
+
+  .nav-bar-container {
+    display: none;
+  }
+  .nav-bar-container-mobile {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 5vh;
+    background-color: #5e8b6f;
+    width: 100%;
+    column-gap: 5%;
+
+    .nav-bar-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20%;
+    }
+    .nav-bar-box-current {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #fcbc59;
+      border-radius: 10%;
+      width: 20%;
+    }
+    .nav-bar {
+      width: 40%;
+    }
+    .nav-bar-current {
+      width: 40%;
+    }
+    .sornn-logo {
+      display: none;
+    }
+  }
+
+  .chat-box {
+    display: none;
+  }
+
+  .chat-list {
+    width: 100% !important;
+    height: 95vh !important;
   }
 }
