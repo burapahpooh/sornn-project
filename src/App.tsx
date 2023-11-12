@@ -1,4 +1,6 @@
 import "bootstrap/dist/css/bootstrap.css";
+import { BiChevronLeft, BiSend, BiCategory } from "react-icons/bi";
+//import { useMediaQuery } from "usehooks-ts";
 import {
   users,
   user,
@@ -12,6 +14,7 @@ import "./fonts.css";
 import "./index.css";
 import Modal from "react-bootstrap/Modal";
 import Login, { loginUser, resetLoginUser } from "./Login.tsx";
+import { ModalBody } from "react-bootstrap";
 
 export default function App() {
   var count = 10;
@@ -27,6 +30,7 @@ export default function App() {
   var [currentConversationID, setCurrentConversationID] = useState<string>("");
   var [MessageText, UpdateMessageText] = useState("");
   var [modalStatus, setModalStatus] = useState(false);
+  var [CurrentChatStatus, setCurrentChatStatus] = useState(false);
   const inputRef = React.useRef<HTMLInputElement | null>(null);
 
   //get all chat
@@ -50,6 +54,7 @@ export default function App() {
           onClick={() => {
             setCurrentChatUser((currentChatUser = dummyUser));
             setCurrentConversationID(dummyConversation.conversation_id);
+            setCurrentChatStatus(true);
             currentConversation = [];
           }}
         >
@@ -108,6 +113,13 @@ export default function App() {
       );
     }
   });
+
+  // function getNavBar() {
+  //   const matches = useMediaQuery("(max-width:600px)");
+
+  //   return <span>{`(min-width:600px) matches: ${matches}`}</span>;
+  // }
+
   //conversation trigger
   function GetConversation() {
     conversationData
@@ -130,7 +142,7 @@ export default function App() {
                 className="user-profile"
                 src={"data:image/png;base64," + currentChatUser?.user_img}
               />
-              <div className="message">{message.message_text}</div>
+              <div className="message other">{message.message_text}</div>
             </div>
           ) : (
             <div
@@ -144,6 +156,7 @@ export default function App() {
             >
               <div className="message">{message.message_text}</div>
               <img
+                className="read-check"
                 style={
                   {
                     width: "1.5%",
@@ -335,6 +348,7 @@ export default function App() {
                   resetLoginUser();
                   setCurrentConversationID("");
                   setCurrentChatUser(null);
+                  setCurrentChatStatus(false);
                   currentConversation = [];
                 }, 500);
               }}
@@ -572,6 +586,7 @@ export default function App() {
                 setCurrentConversationID("");
                 setCurrentChatUser(null);
                 currentConversation = [];
+                setCurrentChatStatus(false);
               }, 500);
             }}
             className="nav-bar-box"
@@ -594,8 +609,157 @@ export default function App() {
             </svg>
           </div>
         </div>
-        <Modal show={modalStatus} centered size="sm">
+        <Modal
+          className="chat-process-modal"
+          show={modalStatus}
+          centered
+          size="sm"
+        >
           <Modal.Body>Processing...</Modal.Body>
+        </Modal>
+        {/* Mobile Chat Modal */}
+        <Modal
+          show={CurrentChatStatus}
+          centered
+          size="xl"
+          fullscreen
+          style={
+            {
+              fontFamily: "DBHeaventCond",
+            } as React.CSSProperties
+          }
+        >
+          <Modal.Header style={{ height: "10vh" } as React.CSSProperties}>
+            <div
+              className="row"
+              style={{ height: "100%", width: "80%" } as React.CSSProperties}
+            >
+              <div
+                style={
+                  {
+                    width: "10%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    padding: "0%",
+                  } as React.CSSProperties
+                }
+                onClick={() => {
+                  setCurrentConversationID("");
+                  setCurrentChatUser(null);
+                  currentConversation = [];
+                  setCurrentChatStatus(false);
+                }}
+              >
+                <BiChevronLeft style={{ fontSize: "200%" }} />
+              </div>
+              <div
+                style={
+                  {
+                    width: "20%",
+                    height: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  } as React.CSSProperties
+                }
+              >
+                {currentChatUser?.user_img == null ? (
+                  <></>
+                ) : (
+                  <img
+                    src={"data:image/png;base64," + currentChatUser?.user_img}
+                    style={
+                      {
+                        height: "100%",
+                        width: "auto",
+                        margin: "auto 0",
+                        padding: "0%",
+                      } as React.CSSProperties
+                    }
+                  />
+                )}
+              </div>
+              <div
+                style={
+                  {
+                    width: "70%",
+                    margin: "auto 0",
+                    fontSize: "30px",
+                    padding: "0%",
+                  } as React.CSSProperties
+                }
+              >
+                {currentChatUser?.user_name}
+              </div>
+            </div>
+          </Modal.Header>
+          <ModalBody
+            style={
+              {
+                height: "90vh",
+                padding: "0%",
+                overflowY: "hidden",
+              } as React.CSSProperties
+            }
+          >
+            <div className="chat-panel-mobile">
+              <div className="conversation-panel">
+                {currentConversation == null ? <></> : currentConversation}
+              </div>
+              {currentChatUser?.user_id == null ? (
+                <></>
+              ) : (
+                <div className="messaging-group">
+                  <BiCategory
+                    style={
+                      {
+                        width: "10%",
+                        height: "60%",
+                        color: "#fcbc59",
+                      } as React.CSSProperties
+                    }
+                  ></BiCategory>
+                  <input
+                    type="text"
+                    ref={inputRef}
+                    style={
+                      {
+                        width: "80%",
+                        height: "80%",
+                        borderRadius: "20px",
+                        borderColor: "transparent",
+                        padding: "1% 3%",
+                        backgroundColor: "#94cfaa",
+                        color: "black",
+                        fontSize: "20px",
+                      } as React.CSSProperties
+                    }
+                    onChange={(val) => {
+                      UpdateMessageText((MessageText = val.target.value));
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        sendMessage();
+                      }
+                    }}
+                  />
+                  <BiSend
+                    style={
+                      {
+                        width: "10%",
+                        height: "60%",
+                        color: "#fcbc59",
+                      } as React.CSSProperties
+                    }
+                    onClick={() => {
+                      sendMessage();
+                    }}
+                  ></BiSend>
+                </div>
+              )}
+            </div>
+          </ModalBody>
         </Modal>
       </div>
     );

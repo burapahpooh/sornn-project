@@ -144,9 +144,16 @@ export default function Login() {
             LOGIN
           </button>
         </div>
-        <Modal show={modalStatus} centered size="sm">
-          <Modal.Body>Processing...</Modal.Body>
-        </Modal>
+        <div className="chat-process-container">
+          <Modal
+            show={modalStatus}
+            className="chat-process-modal"
+            centered
+            size="sm"
+          >
+            <Modal.Body>Processing...</Modal.Body>
+          </Modal>
+        </div>
       </div>
     </>
   );
